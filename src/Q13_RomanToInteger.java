@@ -1,34 +1,109 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Q13_RomanToInteger {
     public static int romanToInt(String s) {
 
-        Map<Character, Integer> m = new HashMap<>();
-        m.put('I',1);
-        m.put('V', 5);
-        m.put('X', 10);
-        m.put('L', 50);
-        m.put('C', 100);
-        m.put('D', 500);
-        m.put('M', 1000);
+        Map<Character,Integer> map= new HashMap<>();
+        map.put('I',1);
+        map.put('V',5);
+        map.put('X',10);
+        map.put('L',50);
+        map.put('C',100);
+        map.put('D',500);
+        map.put('M',1000);
 
-        int ans =0;
+        List<Integer> list = new ArrayList<>();
 
-        for(int i=0; i<s.length(); i++){
-            if( i< s.length()-1 && m.get(s.charAt(i)) < m.get(s.charAt(i+1))){
-                ans -= m.get(s.charAt(i));
-            }else{
-                ans+= m.get(s.charAt(i));
-            }
+        char[] cArr = s.toCharArray();
+
+        for(char c : cArr){
+            list.add(map.get(c));
         }
-        return ans;
+
+        //System.out.println(list);
+        int sum = list.get(list.size()-1);
+        System.out.println("sum " + sum) ;
+        int p1 =0;
+        int p2;
+
+        for(int i = list.size()-1; i >0 ; i--){
+            System.out.println(list.get(i));
+            p1 = list.get(i);
+            p2 = list.get(i-1);
+
+
+            if(p1 > p2 ){
+                sum -= p2;
+            }else{
+                sum+=p2;
+            }
+
+        }
+
+        return sum;
+
 
     }
+
+
+        public static int OptimalRomanToInt(String s) {
+            Map<Character, Integer> map = new HashMap<>();
+            map.put('I', 1);
+            map.put('V', 5);
+            map.put('X', 10);
+            map.put('L', 50);
+            map.put('C', 100);
+            map.put('D', 500);
+            map.put('M', 1000);
+
+            int sum = 0;
+            int prev = 0;
+
+            for (int i = s.length() - 1; i >= 0; i--) {
+                int curr = map.get(s.charAt(i));
+                if (curr >= prev) {
+                    sum += curr;
+                } else {
+                    sum -= curr;
+                }
+                prev = curr;
+            }
+
+            return sum;
+        }
+
+        public static int solution(String s){
+            Map<Character, Integer> map = new HashMap<>();
+            map.put('I', 1);
+            map.put('V', 5);
+            map.put('X', 10);
+            map.put('L', 50);
+            map.put('C', 100);
+            map.put('D', 500);
+            map.put('M', 1000);
+
+
+            int prev = 0;
+            int sum = 0;
+
+            for (int i = s.length()-1; i >=0; i-- ){
+                int curr = map.get(s.charAt(i));
+                if(curr >= prev){
+                    sum+=curr;
+                }else{
+                    sum-=curr;
+                }
+                prev = curr;
+            }
+
+
+            return sum;
+        }
+
 
     public static void main(String[] args) {
-        String s = "LVIII";
-        System.out.println(romanToInt(s));
+        System.out.println(OptimalRomanToInt("MCMXCIV"));
+//        System.out.println();
+        System.out.println(solution("MCMXCIV"));
     }
-
 }
